@@ -1,4 +1,6 @@
 
+import math
+import typing
 
 class Vec3: 
 
@@ -6,7 +8,7 @@ class Vec3:
         self.e = (e0, e1, e2)
 
     def __neg__(self):
-        return Vec3(-self.e[0], -self.e[1], -self.e[2]))
+        return Vec3(-self.e[0], -self.e[1], -self.e[2])
     
     def __add__(self, other):
         return Vec3(self.e[0] + other.e[0] , self.e[1] + other.e[1] ,self.e[2] + other.e[2])
@@ -45,12 +47,14 @@ class Vec3:
         return Vec3(self.e[0]/other , self.e[1]/other , self.e[2]/other)
 
     def __str__(self):
-            return self.x + " " + self.y + " " +  self.z 
+            return str(self.x) + " " + str(self.y) + " " + str(self.z) 
 
 
     @property
     def length(self):
-        return sqrt(self.e[0] * self.e[0] + self.e[1]*self.e[1] + self.e[2]*self.e[2])
+        a = self.e[0] * self.e[0] + self.e[1]*self.e[1] + self.e[2]*self.e[2]
+        return math.sqrt(a)
+
     @property
     def x(self):
         return self.e[0]
@@ -62,6 +66,15 @@ class Vec3:
     @property
     def z(self):
         return self.e[2]
+
+
+
+class Point3(Vec3):
+    pass
+
+class Color(Vec3):
+    pass
+
 
 def dot(u: Vec3, v: Vec3) -> float:
     return u.e[0] * v.e[0] + u.e[1] * v.e[1] + u.e[2] + v.e[2]
@@ -75,10 +88,3 @@ def cross(u: Vec3, v: Vec3) -> Vec3:  # TODO: inline function
         u.e[2] * v.e[0] - u.e[0] * v.e[2],
         u.e[0] * v.e[1] - u.e[1] * v.e[0],
     )
-
-
-class Point3(Vec3):
-    pass
-
-class Color(Vec3):
-    pass
