@@ -8,4 +8,4 @@ I tried c ++ first, but I noticed that I was struggling with errors rather than 
 
 ## First Output
 
-![First Output](https://github.com/ysnacrk/pytracing/image.png)
+![First Output](https://github.com/ysnacrk/pytracing/blob/master/image.png)
