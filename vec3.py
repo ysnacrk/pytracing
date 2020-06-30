@@ -1,4 +1,3 @@
-
 import math
 import typing
 
@@ -50,6 +49,20 @@ class Vec3:
             return str(self.x) + " " + str(self.y) + " " + str(self.z) 
 
 
+    def crossProduct(self, v):
+        return Vec3(
+            self.e[1] * v.e[2] - self.e[2] * v.e[1],
+            self.e[2] * v.e[0] - self.e[0] * v.e[2],
+            self.e[0] * v.e[1] - self.e[1] * v.e[0],
+        )
+
+    @property
+    def normalize(self):
+        a = self.e[0] * self.e[0] + self.e[1]*self.e[1] + self.e[2]*self.e[2]
+        len = math.sqrt(a)
+        return Vec3(self.e[0]/len, self.e[1]/len, self.e[2]/len)
+        
+
     @property
     def length(self):
         a = self.e[0] * self.e[0] + self.e[1]*self.e[1] + self.e[2]*self.e[2]
@@ -66,18 +79,10 @@ class Vec3:
     @property
     def z(self):
         return self.e[2]
-
-
-
-class Point3(Vec3):
-    pass
-
-class Color(Vec3):
-    pass
-
+    
 
 def dot(u: Vec3, v: Vec3) -> float:
-    return u.e[0] * v.e[0] + u.e[1] * v.e[1] + u.e[2] + v.e[2]
+    return u.e[0] * v.e[0] + u.e[1] * v.e[1] + u.e[2] * v.e[2]
 
 def unit_vector(v: Vec3) -> Vec3:  
     return v / v.length
@@ -86,5 +91,5 @@ def cross(u: Vec3, v: Vec3) -> Vec3:  # TODO: inline function
     return Vec3(
         u.e[1] * v.e[2] - u.e[2] * v.e[1],
         u.e[2] * v.e[0] - u.e[0] * v.e[2],
-        u.e[0] * v.e[1] - u.e[1] * v.e[0],
+        u.e[0] * v.e[1] - u.e[1] * v.e[0]
     )

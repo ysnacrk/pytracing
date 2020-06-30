@@ -1,40 +1,49 @@
+from shape import *
 
+def write_color(camera : Vec3 , rd : Vec3, shapes) -> None:
+    intersect_list = []
+    intersect = Intersect(0 , 0)
 
-
-
-from color import write_color
-from vec3 import *
-from ray import *
-
-
-def ray_color(ray : Ray):
-
-    unit_direction = unit_vector(ray.direction)
-    t = 0.5*(unit_direction.y + 1.0)
-    return (1.0-t)*Vec3(1.0, 1.0, 1.0) + t*Vec3(0.5, 0.7, 1.0)
+    for i in range(0 , 3):
+        t = shapes[i].intersect(camera  , rd)
+        
+        if t > 0.0:
+            intersect.distance = t
+            intersect.indice   = i
+            
+            intersect_list.append(intersect)
     
-aspect_ratio = 16.0 / 9.0
+    if len(intersect_list) > 0:
+        min_distance = 3.402823466e+38     
+        min_indis    = -1
 
-img_width = 384
-img_height = int(img_width / aspect_ratio)
+        for i in range(len(intersect_list)):
+            if intersect_list[i].distance < min_distance:
+                min_indis = intersect_list[i].indice
+                min_distance = intersect_list[i].distance
 
-viewport_height = 2.0
-viewport_width = aspect_ratio * viewport_height
-focal_length = 1.0
+        return shapes[min_indis].color
 
-horizantal = Point3(viewport_width , 0 , 0)
-vertical = Point3(0 , viewport_height ,0)
-origin = Point3(0 , 0 , 0)
+    return Color(0, 0 ,0)     
 
-lower_left_corner = origin - horizantal / 2 - vertical / 2 - Vec3(0, 0, focal_length)
 
-print("P3\n" + str(img_width) + " " + str(img_height) + "\n255")
+def main() -> None:
 
-for j in range(img_height, 0 , -1):
-    for i in range(0, img_width):
-        u = i / (img_width - 1)
-        v = j / (img_height - 1)
-        r = Ray(origin , lower_left_corner + u*horizantal + v*vertical - origin)
-        pixel_color = ray_color(r)
-        write_color(pixel_color)
+    print("P3\n" + str(800) + " " + str(450) + "\n255\n")
 
+    t1 = Triangle(Vec3(0, 30,  40), Vec3(40, -30, 120), Vec3(-40, -30, 120) ,Color(255 , 0 , 0))
+    t2 = Triangle(Vec3(-50, 30,  124), Vec3(50, 30, 124), Vec3(0, -30, 44) ,Color(0 , 255 , 0))
+    t3 = Triangle(Vec3(-30, 0,  37), Vec3(30, 40, 117), Vec3(30, -40, 117) ,Color(0 , 0 , 255))
+
+    shapes = (t1, t2, t3)
+    camera = Vec3(0, 0, 0)
+
+    for j in range(0, 450):
+        for i in range(0, 800):
+            pixel = Vec3(16 * i / 799.0 - 8 , 4.5 - j * 9 / 449.0 , 10)
+            rd = (pixel - camera).normalize
+            color = write_color(camera, rd, shapes)
+            print(str(color.r) + " " + str(color.g) + " " + str(color.b))
+
+if __name__ == "__main__":
+    main()
