@@ -4,7 +4,7 @@ def write_color(camera : Vec3 , rd : Vec3, shapes) -> None:
     intersect_list = []
     intersect = Intersect(0 , 0)
 
-    for i in range(0 , 3):
+    for i in range(0 , 2):
         t = shapes[i].intersect(camera  , rd)
         
         if t > 0.0:
@@ -32,10 +32,13 @@ def main() -> None:
     print("P3\n" + str(800) + " " + str(450) + "\n255\n")
 
     t1 = Triangle(Vec3(0, 30,  40), Vec3(40, -30, 120), Vec3(-40, -30, 120) ,Color(255 , 0 , 0))
-    t2 = Triangle(Vec3(-50, 30,  124), Vec3(50, 30, 124), Vec3(0, -30, 44) ,Color(0 , 255 , 0))
-    t3 = Triangle(Vec3(-30, 0,  37), Vec3(30, 40, 117), Vec3(30, -40, 117) ,Color(0 , 0 , 255))
+    # t2 = Triangle(Vec3(-50, 30,  124), Vec3(50, 30, 124), Vec3(0, -30, 44) ,Color(0 , 255 , 0))
+    # t3 = Triangle(Vec3(-30, 0,  37), Vec3(30, 40, 117), Vec3(30, -40, 117) ,Color(0 , 0 , 255))
 
-    shapes = (t1, t2, t3)
+
+    s1 = Sphere(Vec3(0, 0, 300), 75, Color(0, 0, 255))
+
+    shapes = (s1, t1)
     camera = Vec3(0, 0, 0)
 
     for j in range(0, 450):
@@ -43,7 +46,7 @@ def main() -> None:
             pixel = Vec3(16 * i / 799.0 - 8 , 4.5 - j * 9 / 449.0 , 10)
             rd = (pixel - camera).normalize
             color = write_color(camera, rd, shapes)
-            print(str(color.r) + " " + str(color.g) + " " + str(color.b))
+            print(color)
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,8 @@
 from vec3 import *
 from color import *
 from math import *
+
+
 class Shape: 
     def __init__(self, color : Color) -> None:
         self.color = color
@@ -43,6 +45,36 @@ class Triangle(Shape):
                 return 0
         else :
             return 0
+
+class Sphere(Shape):
+
+    def __init__(self, center : Vec3 , radius : float, color : Color) -> None:
+        self.center = center
+        self.color = color
+        self.radius = radius
+
+
+    def intersect(self, r, direction):
+        l = self.center - r 
+        s = dot(l , direction)
+        l2 = dot(l, l)
+        r2 = self.radius * self.radius
+
+        if s < 0 and l2 > r2:
+            return 0
+        
+        s2 = s * s
+        m2 = l2 - s2
+
+        if m2 > r2:
+            return 0
+
+        q = sqrt(r2 - m2)
+
+        if l2 > r2:
+            return s - q
+        else:
+            return s + q
 
 class Intersect:
     def __init__(self,indice, distance):
